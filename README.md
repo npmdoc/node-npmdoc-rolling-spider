@@ -1,6 +1,6 @@
 # npmdoc-rolling-spider
 
-#### api documentation for  [rolling-spider (v1.7.0)](https://github.com/voodootikigod/node-rolling-spider#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-rolling-spider.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-rolling-spider) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-rolling-spider.svg)](https://travis-ci.org/npmdoc/node-npmdoc-rolling-spider)
+#### basic api documentation for  [rolling-spider (v1.7.0)](https://github.com/voodootikigod/node-rolling-spider#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-rolling-spider.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-rolling-spider) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-rolling-spider.svg)](https://travis-ci.org/npmdoc/node-npmdoc-rolling-spider)
 
 #### A library for sending BLE commands to a Parrot Rolling Spider drone
 
@@ -91,7 +91,8 @@
         "lint": "eslint . --ext .js",
         "test": "mocha"
     },
-    "version": "1.7.0"
+    "version": "1.7.0",
+    "bin": {}
 }
 ```
 
