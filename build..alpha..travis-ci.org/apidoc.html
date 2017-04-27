@@ -1980,7 +1980,20 @@ Causes the drone to do an amazing back flip.
     }
   }.bind(this));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    } else if (this.driveStepsRemaining &#x3e; 1) {
+      // decrement the drive chain
+      this.driveStepsRemaining--;
+    } else {
+      // reset to hover states
+      this.emit(&#x27;driveComplete&#x27;, this.speeds);
+      this.driveStepsRemaining = 0;
+      this.<span class="apidocCodeKeywordSpan">hover</span>();
+    }
+
+  }.bind(this), 50);
+};
+...</pre></li>
     </ul>
 
 
@@ -2198,7 +2211,23 @@ Causes the drone to do an amazing right flip. **DO NOT USE WITH WHEELS ON!!!**
     <li>description and source-code<pre class="apidocCodePre">onDisconnect = function () {
   // end of swarm
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    flying: false,
+    battery: 100
+  };
+
+
+  // handle disconnect gracefully
+  this.ble.on(&#x27;warning&#x27;, function(message) {
+    this.<span class="apidocCodeKeywordSpan">onDisconnect</span>();
+  }.bind(this));
+};
+
+
+util.inherits(Drone, EventEmitter);
+
+/**
+...</pre></li>
     </ul>
 
 
@@ -2578,7 +2607,23 @@ Controls the roll, which is a horizontal movement. `callback` is invoked after a
     }
   }.bind(this));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+
+controller.on(&#x27;9:release&#x27;, function () {
+d.flatTrim();
+});
+
+controller.on(&#x27;10:release&#x27;, function () {
+d.<span class="apidocCodeKeywordSpan">toggle</span>();   // take off or land
+});
+
+controller.on(&#x27;left:move&#x27;, function (data) {
+console.log(&#x27;left&#x27;);
+state.up = variance(data.y);
+state.turn = variance(data.x);
+d.drive(state, -1);
+...</pre></li>
     </ul>
 
 
@@ -3356,7 +3401,23 @@ rollingSpider.<span class="apidocCodeKeywordSpan">connect</span>(function() {
     this.onDisconnect();
   }.bind(this));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+      isFound = true;
+    } else if ((typeof this.targets === &#x27;undefined&#x27; || this.targets.length === 0) &#x26;&#x26; isDrone) {
+      isFound = true;
+    }
+
+    if (isFound) {
+      this.logger(matchType + &#x27; match found: &#x27; + localName + &#x27; &#x3c;&#x27; + uuid + &#x27;&#x3e;&#x27;);
+      this.<span class="apidocCodeKeywordSpan">connectPeripheral</span>(peripheral, onConnected);
+    }
+  }
+}.bind(this));
+
+if (this.forceConnect || this.ble.state === &#x27;poweredOn&#x27;) {
+  this.logger(&#x27;RollingSpider.forceConnect&#x27;);
+  this.ble.startScanning();
+...</pre></li>
     </ul>
 
 
@@ -3547,7 +3608,23 @@ Makes the drone gain or reduce altitude. `callback` is invoked after all the ste
   // inject into ping flow.
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  d.toggle();   // take off or land
+});
+
+controller.on(&#x27;left:move&#x27;, function (data) {
+  console.log(&#x27;left&#x27;);
+  state.up = variance(data.y);
+  state.turn = variance(data.x);
+  d.<span class="apidocCodeKeywordSpan">drive</span>(state, -1);
+});
+
+controller.on(&#x27;right:move&#x27;, function (data) {
+  state.forward = variance(data.y);
+  state.tilt = variance(data.x);
+  d.drive(state, -1);
+});
+...</pre></li>
     </ul>
 
 
@@ -3801,7 +3878,24 @@ Causes the drone to do an amazing back flip.
   return filtered[0];
 
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ *
+ * @param callback to be called once set up
+ * @private
+ */
+Drone.prototype.handshake = function(callback) {
+this.logger(&#x27;RollingSpider#handshake&#x27;);
+[&#x27;fb0f&#x27;, &#x27;fb0e&#x27;, &#x27;fb1b&#x27;, &#x27;fb1c&#x27;, &#x27;fd22&#x27;, &#x27;fd23&#x27;, &#x27;fd24&#x27;, &#
+x27;fd52&#x27;, &#x27;fd53&#x27;, &#x27;fd54&#x27;].forEach(function(key) {
+  var characteristic = this.<span class="apidocCodeKeywordSpan">getCharacteristic</span>(key);
+  characteristic.notify(true);
+}.bind(this));
+
+// Register listener for battery notifications.
+this.getCharacteristic(&#x27;fb0f&#x27;).on(&#x27;data&#x27;, function(data, isNotification) {
+  if (!isNotification) {
+    return;
+...</pre></li>
     </ul>
 
 
@@ -3901,7 +3995,23 @@ Causes the drone to do an amazing back flip.
     );
   }.bind(this), 100);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+     if (typeof callback === &#x27;function&#x27;) {
+       callback(error);
+     }
+   } else {
+     this.services = services;
+     this.characteristics = characteristics;
+
+     this.<span class="apidocCodeKeywordSpan">handshake</span>(callback);
+   }
+ }.bind(this));
+};
+
+/**
+* Performs necessary handshake to initiate communication with the device. Also configures all notification handlers.
+*
+...</pre></li>
     </ul>
 
 
@@ -3928,7 +4038,20 @@ Causes the drone to do an amazing back flip.
     callback();
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    } else if (this.driveStepsRemaining &#x3e; 1) {
+      // decrement the drive chain
+      this.driveStepsRemaining--;
+    } else {
+      // reset to hover states
+      this.emit(&#x27;driveComplete&#x27;, this.speeds);
+      this.driveStepsRemaining = 0;
+      this.<span class="apidocCodeKeywordSpan">hover</span>();
+    }
+
+  }.bind(this), 50);
+};
+...</pre></li>
     </ul>
 
 
@@ -4125,7 +4248,23 @@ Causes the drone to do an amazing right flip. **DO NOT USE WITH WHEELS ON!!!**
     this.emit(&#x27;disconnected&#x27;);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    flying: false,
+    battery: 100
+  };
+
+
+  // handle disconnect gracefully
+  this.ble.on(&#x27;warning&#x27;, function(message) {
+    this.<span class="apidocCodeKeywordSpan">onDisconnect</span>();
+  }.bind(this));
+};
+
+
+util.inherits(Drone, EventEmitter);
+
+/**
+...</pre></li>
     </ul>
 
 
@@ -4634,7 +4773,23 @@ Controls the roll, which is a horizontal movement. `callback` is invoked after a
     this.takeOff(options, callback);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+
+controller.on(&#x27;9:release&#x27;, function () {
+d.flatTrim();
+});
+
+controller.on(&#x27;10:release&#x27;, function () {
+d.<span class="apidocCodeKeywordSpan">toggle</span>();   // take off or land
+});
+
+controller.on(&#x27;left:move&#x27;, function (data) {
+console.log(&#x27;left&#x27;);
+state.up = variance(data.y);
+state.turn = variance(data.x);
+d.drive(state, -1);
+...</pre></li>
     </ul>
 
 
@@ -4892,7 +5047,23 @@ Makes the drone gain or reduce altitude. `callback` is invoked after all the ste
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+  }.bind(this));
+
+
+  setTimeout(function() {
+
+this.<span class="apidocCodeKeywordSpan">writeTo</span>(
+  &#x27;fa0b&#x27;,
+  new Buffer([0x04, ++this.steps.fa0b, 0x00, 0x04, 0x01, 0x00, 0x32, 0x30, 0x31, 0x34, 0x2D, 0x31, 0x30, 0x2D, 0x32, 0x38, 0x00]),
+  function(error) {
+    setTimeout(function() {
+      if (typeof callback === &#x27;function&#x27;) {
+        callback(error);
+      }
+...</pre></li>
     </ul>
 
 
